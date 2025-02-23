@@ -29,34 +29,34 @@ class BookingController extends Controller
 
     public function pushData()
     {
-        $bookings = Booking::with(['user', 'ticket']) // Pakai Eager Loading
+        $bookings = Booking::with(['user', 'ticket'])  
             ->select([
                 'bookings.*',
                 \DB::raw('(SELECT bus_name FROM tickets WHERE tickets.id = bookings.ticket_id) as bus_name'),
-                \DB::raw('(SELECT name FROM users WHERE users.id = bookings.user_id) as user_name') // ✅ Ambil nama user
+                \DB::raw('(SELECT name FROM users WHERE users.id = bookings.user_id) as user_name')  
             ]);
     
         return DataTables::of($bookings)
             ->addColumn('user_name', function ($booking) {
                 return e(optional($booking->user)->name ?? 'N/A');
             })
-            ->addColumn('bus_name', function ($booking) { // ✅ Ambil nama bus dari subquery
+            ->addColumn('bus_name', function ($booking) {  
                 return e($booking->bus_name ?? 'N/A');
             })
-            ->filterColumn('bus_name', function ($query, $keyword) { // ✅ Agar bisa di-search
+            ->filterColumn('bus_name', function ($query, $keyword) {  
                 $query->whereHas('ticket', function ($q) use ($keyword) {
                     $q->where('bus_name', 'like', "%{$keyword}%");
                 });
             })
-            ->orderColumn('bus_name', function ($query, $direction) { // ✅ Agar bisa di-sort
+            ->orderColumn('bus_name', function ($query, $direction) {  
                 $query->orderBy('bus_name', $direction);
             })
-            ->filterColumn('user_name', function ($query, $keyword) { // ✅ Agar user_name bisa di-search
+            ->filterColumn('user_name', function ($query, $keyword) {  
                 $query->whereHas('user', function ($q) use ($keyword) {
                     $q->where('name', 'like', "%{$keyword}%");
                 });
             })
-            ->orderColumn('user_name', function ($query, $direction) { // ✅ Agar user_name bisa di-sort
+            ->orderColumn('user_name', function ($query, $direction) {  
                 $query->orderBy('user_name', $direction);
             })
             ->addColumn('ticket_info', function ($booking) {
@@ -203,7 +203,7 @@ public function getData()
 
     $ticket = Ticket::findOrFail($request->ticket_id);
 
-    // Hitung ulang sisa kursi
+     
     $totalBooked = Booking::where('ticket_id', $ticket->id)
         ->whereIn('status', ['pending', 'paid'])
         ->sum('jumlah_kursi');

@@ -30,17 +30,17 @@ class TicketController extends Controller
     {
         $tickets = Ticket::where('status', 'Active')
         ->with('bookings')
-        ->orderBy('created_at', 'desc') // Menampilkan tiket terbaru paling atas
+        ->orderBy('created_at', 'desc')  
         ->get();    
         return view('user.index', compact('tickets'));
     }
-    // Method untuk menampilkan halaman dengan DataTables
+     
     public function index()
     {
         return view('tickets.index');
     }
 
-    // Method untuk mendapatkan data tiket dengan format DataTables
+     
     public function getData()
 {
     $tickets = Ticket::select(['id', 'bus_number', 'bus_name', 'capacity', 'bus_type', 'origin', 'destination', 'departure_date', 'arrival_date', 'price', 'status', 'image']);
@@ -79,13 +79,13 @@ class TicketController extends Controller
         ->make(true);
 }
     
-    // Method untuk menampilkan form create
+     
     public function create()
     {
         return view('tickets.create');
     }
 
-    // Method untuk menyimpan data tiket
+     
     public function store(Request $request)
 {
     $request->validate([
@@ -99,7 +99,7 @@ class TicketController extends Controller
         'arrival_date' => 'nullable|date',
         'price' => 'required|integer',
         'status' => 'required|in:active,inactive',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi gambar
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',  
     ]);
 
     $data = $request->all();
@@ -122,14 +122,14 @@ class TicketController extends Controller
     return redirect()->route('tickets.index')->with('success', 'Tiket berhasil ditambahkan!');
 }
 
-    // Method untuk menampilkan form edit
+     
     public function edit($id)
     {
         $ticket = Ticket::findOrFail($id);
         return view('tickets.edit', compact('ticket'));
     }
 
-    // Method untuk mengupdate data tiket
+     
     public function update(Request $request, $id)
 {
     $request->validate([
@@ -150,7 +150,7 @@ class TicketController extends Controller
     $data = $request->all();
 
     if ($request->hasFile('image')) {
-        // Hapus gambar lama jika ada
+         
         if ($ticket->image) {
             Storage::disk('public')->delete($ticket->image);
         }
@@ -172,7 +172,7 @@ class TicketController extends Controller
 }
 
 
-    // Method untuk menghapus tiket
+     
     public function destroy($id)
     {
         $ticket = Ticket::findOrFail($id);
