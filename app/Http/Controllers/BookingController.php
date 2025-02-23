@@ -29,7 +29,7 @@ class BookingController extends Controller
 
     public function pushData()
     {
-        $bookings = Booking::with(['user', 'ticket'])  
+        $bookings = Booking::with(['user', 'ticket'])
             ->select([
                 'bookings.*',
                 \DB::raw('(SELECT bus_name FROM tickets WHERE tickets.id = bookings.ticket_id) as bus_name'),
