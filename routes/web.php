@@ -47,8 +47,11 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/admin/bookings/{id}/confirm', [BookingController::class, 'confirmPayment'])->name('admin.bookings.confirm');
         Route::delete('/admin/bookings/hapus/{booking}', [BookingController::class, 'hapus'])->name('bookings.hapus');
         Route::delete('/admin/bookings/delete/{booking}', [BookingController::class, 'delete'])->name('admin.bookings.delete');
+        Route::get('/bookings/trashed', [BookingController::class, 'trashed'])->name('bookings.trashed');
+        Route::put('/bookings/{id}/restore', [BookingController::class, 'restore'])->name('bookings.restore');
         Route::get('/admin/reports', [AdminReportController::class, 'index'])->name('admin.reports');
         Route::get('/admin/reports/data', [AdminReportController::class, 'getData'])->name('reports.data');
+        Route::delete('/bookings/{id}/force-delete', [BookingController::class, 'forceDelete'])->name('bookings.forceDelete');
     });
 
     Route::middleware(['check-role:user'])->prefix('user')->group(function () {

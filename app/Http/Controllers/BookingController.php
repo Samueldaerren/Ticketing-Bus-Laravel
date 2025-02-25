@@ -30,6 +30,7 @@ class BookingController extends Controller
     public function pushData()
     {
         $bookings = Booking::with(['user', 'ticket'])
+            ->whereNull('deleted_at')
             ->select([
                 'bookings.*',
                 \DB::raw('(SELECT bus_name FROM tickets WHERE tickets.id = bookings.ticket_id) as bus_name'),
@@ -118,8 +119,31 @@ class BookingController extends Controller
 public function delete(Booking $booking)
 {
     $booking->delete();
-    return redirect()->route('admin-dashboard')->with('success', 'Booking berhasil dihapus permanen.');
+    return redirect()->route('admin-dashboard')->with('success', 'Booking berhasil dihapus!');
 }
+
+
+public function trashed()
+{
+    $bookings = Booking::onlyTrashed()->with(['user', 'ticket'])->get();
+    return view('admin.trashed', compact('bookings'));
+}
+
+public function restore($id)
+{
+    $booking = Booking::onlyTrashed()->findOrFail($id);
+    $booking->restore();
+    return redirect()->route('bookings.trashed')->with('success', 'Booking berhasil dipulihkan.');
+}
+
+public function forceDelete($id)
+{
+    $booking = Booking::onlyTrashed()->findOrFail($id);
+    $booking->forceDelete();
+
+    return redirect()->route('bookings.trashed')->with('success', 'Booking berhasil dihapus permanen.');
+}
+
 
     public function confirmPayment($id)
 {

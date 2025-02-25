@@ -3,6 +3,7 @@
 @section('content')
 <div class="container mt-4">
     <h2 class="mb-4">Daftar Pemesanan</h2>
+    <a href="{{ route('bookings.trashed') }}" class="btn btn-secondary mb-3">Lihat Booking yang Dihapus</a> 
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
