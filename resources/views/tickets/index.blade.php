@@ -18,8 +18,10 @@
     @endif
 
         <h1>Manage Tickets</h1>
-        <a href="{{ route('tickets.create') }}" class="btn btn-primary mb-3">Add Ticket</a>
-        <a href="{{ route('tickets.trashed') }}" class="btn btn-warning mb-3">View Deleted Tickets</a>
+        <div class="btn-group mb-3">
+            <a href="{{ route('tickets.create') }}" class="btn btn-primary mb-3">Add Ticket</a>
+            <a href="{{ route('tickets.trashed') }}" class="btn btn-warning mb-3">View Deleted Tickets</a>
+        </div>
         <table class="table table-striped" id="ticketsTable">
             <thead>
                 <tr>

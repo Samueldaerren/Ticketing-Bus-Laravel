@@ -42,7 +42,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/tickets/trashed', [TicketController::class, 'trashed'])->name('tickets.trashed');
         Route::put('/tickets/{id}/restore', [TicketController::class, 'restore'])->name('tickets.restore');
         Route::delete('/tickets/{id}/force-delete', [TicketController::class, 'forceDelete'])->name('tickets.forceDelete');
-
+        Route::delete('/users/{id}/destroy', [UserController::class, 'destroy'])->name('users.destroy');
+        Route::get('/users/trashed', [UserController::class, 'trashed'])->name('users.trashed');
+        Route::put('/users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
+        Route::delete('/users/{id}/force-delete', [UserController::class, 'forceDelete'])->name('users.forceDelete');
+        
     });
 
     Route::middleware(['check-role:admin'])->prefix('admin')->group(function () {

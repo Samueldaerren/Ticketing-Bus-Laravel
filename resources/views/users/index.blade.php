@@ -18,7 +18,12 @@
     @endif
 
     <h2 class="mb-4">Manajemen Pengguna</h2>
-    <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">Tambah Pengguna</a>
+    <div class="btn-group mb-3">
+        <a href="{{ route('users.create') }}" class="btn btn-primary">Tambah Pengguna</a>
+        <a href="{{ route('users.trashed') }}" class="btn btn-warning">Lihat User Terhapus</a>
+    </div>
+
+
     <table class="table table-bordered" id="users-table">
         <thead>
             <tr>

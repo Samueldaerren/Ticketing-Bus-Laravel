@@ -86,9 +86,43 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'User berhasil diperbarui!');
     }
 
-    public function destroy(User $user)
+    // public function destroy(User $user)
+    // {
+    //     $user->delete();
+    //     return redirect()->route('users.index')->with('success', 'User berhasil dihapus!');
+    // }
+
+
+    public function destroy($id)
     {
+        $user = User::findOrFail($id);
         $user->delete();
+
         return redirect()->route('users.index')->with('success', 'User berhasil dihapus!');
+    }
+
+    // Menampilkan daftar user yang terhapus (Trash)
+    public function trashed()
+    {
+        $users = User::onlyTrashed()->get();
+        return view('users.trashed', compact('users'));
+    }
+
+    // Restore User yang terhapus
+    public function restore($id)
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user->restore();
+
+        return redirect()->route('users.trashed')->with('success', 'User berhasil dipulihkan!');
+    }
+
+    // Hapus Permanen User
+    public function forceDelete($id)
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user->forceDelete();
+
+        return redirect()->route('users.trashed')->with('success', 'User berhasil dihapus permanen!');
     }
 }

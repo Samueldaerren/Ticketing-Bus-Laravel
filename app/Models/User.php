@@ -46,6 +46,8 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    protected $dates = ['deleted_at'];
+
     public function bookings()
     {
         return $this->hasMany(Booking::class);
