@@ -179,5 +179,27 @@ class TicketController extends Controller
         $ticket->delete();
         return redirect()->route('tickets.index')->with('success', 'Tiket berhasil dihapus!');
     }
+
+    public function trashed()
+    {
+        $tickets = Ticket::onlyTrashed()->get();
+        return view('tickets.trashed', compact('tickets'));
+    }  
+
+    public function restore($id)
+    {
+        $ticket = Ticket::onlyTrashed()->findOrFail($id);
+        $ticket->restore();
+        return redirect()->route('tickets.trashed')->with('success', 'Tiket berhasil dipulihkan!');
+    }
+
+    public function forceDelete($id)
+    {
+        $ticket = Ticket::onlyTrashed()->findOrFail($id);
+        $ticket->forceDelete();
+        return redirect()->route('tickets.trashed')->with('success', 'Tiket berhasil dihapus permanen!');
+    }
+
+
 }
 

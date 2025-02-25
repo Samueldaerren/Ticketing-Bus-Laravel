@@ -39,6 +39,10 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['check-role:super-admin'])->prefix('super-admin')->group(function () {
         Route::get('/tickets', [TicketController::class, 'super'])->name('super-admin-tickets');
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+        Route::get('/tickets/trashed', [TicketController::class, 'trashed'])->name('tickets.trashed');
+        Route::put('/tickets/{id}/restore', [TicketController::class, 'restore'])->name('tickets.restore');
+        Route::delete('/tickets/{id}/force-delete', [TicketController::class, 'forceDelete'])->name('tickets.forceDelete');
+
     });
 
     Route::middleware(['check-role:admin'])->prefix('admin')->group(function () {
